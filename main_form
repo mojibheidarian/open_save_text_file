@@ -1,0 +1,39 @@
+import tkinter as tk
+from tkinter.filedialog import askopenfilename as askopen
+from tkinter.filedialog import asksaveasfilename as asksave
+def save_file():
+    file_path_save = asksave(
+        defaultextension="txt",
+        filetypes=[("Text Files", "*.txt"), ("All Files", "*.*")],
+    )
+    if not file_path_save:
+        return
+    with open(file_path_save , 'w') as output_file:
+        text_text = text.get('1.0' , tk.END)
+        output_file.write(text_text)
+    window.title(file_path_save)
+def open_file():
+    file_path_open = askopen(
+        filetypes = [('Text files' , '*.txt') , ('All File' , '*.*') ]
+    )
+    if not file_path_open:
+        return
+    text.delete('1.0' , tk.END)
+    with open(file_path_open , 'r') as input_file:
+        open_text = input_file.read()
+        text.insert(tk.END , open_text)
+    window.title(file_path_open)
+
+window = tk.Tk()
+window.title('text editor')
+window.rowconfigure(0, minsize=250 , weight=1)
+window.columnconfigure(1 , minsize=250 , weight=1)
+text = tk.Text(window)
+btn_frame = tk.Frame(window)
+btn_open = tk.Button(btn_frame , text='open' , command=open_file)
+btn_save = tk.Button(btn_frame , text='Save as ...' , command=save_file)
+btn_open.grid(row=0 , column=0 , sticky='ew' , padx=5 , pady=5)
+btn_save.grid(row=1 , column=0 , sticky='ew' , padx=5)
+btn_frame.grid(row=0 , column=0 , sticky='se')
+text.grid(row=0 , column=1 , sticky='nsew')
+window.mainloop()
